@@ -5,6 +5,8 @@ const FeedbackContext = createContext()
 export const FeedbackProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [feedback, setFeedback] = useState([])
+  const BASE_URL = 'https://feedback-res-api.herokuapp.com'
+  //  const BASE_URL = process.env.REACT_APP_FEEDBACK_API_URL
 
   const [feedbackEdit, setFeedbackEdit] = useState({
     item: {},
@@ -18,7 +20,7 @@ export const FeedbackProvider = ({ children }) => {
   // Fetch Feedback
   const fetchFeedback = async () => {
     // const response = await fetch(`/feedbacks?_sort=id&_order=desc`)
-    const response = await fetch(`/feedbacks`)
+    const response = await fetch(`${BASE_URL}/feedbacks`)
 
     const data = await response.json()
     setFeedback(data)
@@ -27,8 +29,7 @@ export const FeedbackProvider = ({ children }) => {
 
   // Add Feedback
   const addFeedback = async (newFeedback) => {
-    console.log(JSON.stringify(newFeedback))
-    const response = await fetch('/feedbacks/', {
+    const response = await fetch(`${BASE_URL}/feedbacks/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +38,6 @@ export const FeedbackProvider = ({ children }) => {
     })
 
     const data = await response.json()
-    console.log(data)
 
     setFeedback([data, ...feedback])
   }
@@ -45,7 +45,7 @@ export const FeedbackProvider = ({ children }) => {
   // DeleteFeedback
   const deleteFeedback = async (id) => {
     if (window.confirm('Are you sure you want to delete?')) {
-      await fetch(`/feedbacks/${id}`, { method: 'DELETE' })
+      await fetch(`${BASE_URL}/feedbacks/${id}`, { method: 'DELETE' })
       setFeedback(feedback.filter((item) => item._id !== id))
     }
   }
@@ -60,15 +60,13 @@ export const FeedbackProvider = ({ children }) => {
 
   // Update feedback item
   const updateFeedback = async (id, updItem) => {
-    console.log(updItem)
-    const response = await fetch(`/feedbacks/${id}`, {
+    const response = await fetch(`${BASE_URL}/feedbacks/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(updItem),
     })
-    console.log(id)
 
     const data = await response.json()
     setFeedback(
