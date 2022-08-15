@@ -14,6 +14,7 @@ export const FeedbackProvider = ({ children }) => {
 
   useEffect(() => {
     fetchFeedback()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Fetch Feedback
