@@ -5,8 +5,7 @@ const FeedbackContext = createContext()
 export const FeedbackProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true)
   const [feedback, setFeedback] = useState([])
-  const BASE_URL = 'https://feedback-res-api.herokuapp.com'
-  //  const BASE_URL = process.env.REACT_APP_FEEDBACK_API_URL
+  const BASE_URL = process.env.REACT_APP_FEEDBACK_API_URL
 
   const [feedbackEdit, setFeedbackEdit] = useState({
     item: {},
@@ -20,7 +19,7 @@ export const FeedbackProvider = ({ children }) => {
   // Fetch Feedback
   const fetchFeedback = async () => {
     // const response = await fetch(`/feedbacks?_sort=id&_order=desc`)
-    const response = await fetch(`${BASE_URL}/feedbacks`)
+    const response = await fetch(`${BASE_URL}/feedbacks?_sort=id&_order=desc`)
 
     const data = await response.json()
     setFeedback(data)
